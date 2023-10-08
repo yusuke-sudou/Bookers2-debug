@@ -1,7 +1,7 @@
 class Group < ApplicationRecord
   has_many :group_users, dependent: :destroy
   belongs_to :owner, class_name: 'User'
-  has_many :users, through: :group_users
+  has_many :users, through: :group_users, source: :user # groupモデルがgroup_userモデルを通してuserモデルと関係していることを表す。
 
   validates :name, presence: true
   validates :introduction, presence: true
@@ -18,5 +18,9 @@ class Group < ApplicationRecord
   end
   # この部分は引数のuserがgroupの作成者か調べるメソッド。
   # groupの作成者のみgroupの編集画面を表示させるときに使用。
-  
+
+  def includesUser?(user) # 与えられたユーザーがグループのメンバーであるかどうか判定するメソッド
+    group_users.exists?(user_id: user.id)
+  end  
+  # group_userテーブルからuser_idがuserのidと一致するレコードが存在するかどうかをチェック、存在する場合はtrue、存在しない場合はfalseで返す。
 end
