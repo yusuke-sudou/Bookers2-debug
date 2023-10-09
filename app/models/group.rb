@@ -1,7 +1,9 @@
 class Group < ApplicationRecord
-  has_many :group_users, dependent: :destroy
   belongs_to :owner, class_name: 'User'
-  has_many :users, through: :group_users, source: :user # groupモデルがgroup_userモデルを通してuserモデルと関係していることを表す。
+  has_many :group_users, dependent: :destroy
+  
+  has_many :users, through: :group_users, source: :user
+   # groupモデルがgroup_userモデルを通してuserモデルと関係していることを表す。
 
   validates :name, presence: true
   validates :introduction, presence: true
